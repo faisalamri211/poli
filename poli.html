@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal Klinik Pratama UM</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        /* CSS Reset and Basic Styles */
+        :root {
+            --primary-blue: #0d6efd;
+            --light-blue: #e7f0fe;
+            --dark-blue: #0a58ca;
+            --text-dark: #343a40;
+            --text-light: #6c757d;
+            --background-light: #f8f9fa;
+            --white: #ffffff;
+            --border-color: #dee2e6;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            background-color: var(--background-light);
+            color: var(--text-dark);
+        }
+
+        /* --- Sidebar --- */
+        .sidebar {
+            width: 260px;
+            background-color: var(--primary-blue);
+            color: var(--white);
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            padding: 24px;
+        }
+
+        .sidebar-header {
+            margin-bottom: 40px;
+            display: flex; /* Make it a flex container */
+            flex-direction: column; /* Stack items vertically */
+            align-items: center; /* Center horizontally */
+            text-align: center; /* Center text */
+        }
+        
+        .sidebar-header .logo-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px; /* Space below logos */
+        }
+
+        .sidebar-header .logo-container img {
+            height: auto; /* Adjust logo size as needed */
+            max-width: 230px;
+            border-radius: 5px; /* Optional: if you want a slight border radius for logos */
+            padding: 3px; /* Small padding inside the logo container */
+        }
+
+
+        .sidebar-header h2 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        .sidebar-header p {
+            font-size: 0.8rem;
+            opacity: 0.8;
+        }
+
+        .sidebar-nav ul {
+            list-style: none;
+        }
+
+        .sidebar-nav li {
+            margin-bottom: 10px;
+        }
+
+        .sidebar-nav a {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            color: var(--white);
+            text-decoration: none;
+            border-radius: 8px;
+            transition: background-color 0.3s;
+            font-weight: 500;
+        }
+
+        .sidebar-nav a i {
+            width: 20px;
+            margin-right: 16px;
+            text-align: center;
+        }
+
+        .sidebar-nav a:hover,
+        .sidebar-nav a.active {
+            background-color: var(--dark-blue);
+        }
+
+        .sidebar-footer {
+            margin-top: auto;
+        }
+
+        .social-media {
+            text-align: center; /* Center social media icons */
+        }
+
+        .social-media a {
+            color: var(--white);
+            margin: 0 8px; /* Adjusted margin for centered icons */
+            font-size: 1.2rem;
+            opacity: 0.8;
+            transition: opacity 0.3s;
+        }
+
+        .social-media a:hover {
+            opacity: 1;
+        }
+
+        /* --- Main Content --- */
+        .main-content {
+            margin-left: 260px;
+            flex: 1;
+            padding: 32px;
+            position: relative; /* Needed for positioning the clock */
+        }
+
+        /* --- Digital Clock --- */
+        #digital-clock {
+            position: absolute;
+            top: 32px;
+            right: 32px;
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            background-color: var(--white);
+            padding: 8px 16px;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+        }
+
+        .main-content header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 8px; /* Adjusted margin */
+        }
+        
+        .main-content header p {
+            color: var(--text-light);
+            margin-bottom: 24px;
+            max-width: 800px;
+        }
+        
+        .content-section {
+            display: none; /* Hidden by default */
+        }
+        
+        .content-section.active {
+            display: block; /* Shown when active */
+        }
+
+        /* Dashboard Cards */
+        .card-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-bottom: 32px; /* Added margin below cards */
+        }
+
+        .card {
+            background-color: var(--white);
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+        }
+
+        .card .icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: var(--light-blue);
+            color: var(--primary-blue);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.8rem;
+            margin-right: 20px;
+        }
+
+        .card .info h3 {
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+
+        .card .info h3 .total-count {
+            font-size: 1.5rem;
+            font-weight: 500;
+            color: var(--text-light);
+        }
+
+        .card .info p {
+            color: var(--text-light);
+            font-size: 1rem;
+        }
+
+        /* --- Slideshow Container --- */
+        .slideshow-container {
+            max-width: 900px; /* Adjust as needed */
+            position: relative;
+            margin: auto;
+            border-radius: 12px;
+            overflow: hidden; /* Ensures image corners are rounded */
+            box-shadow: var(--shadow);
+        }
+
+        .mySlides {
+            display: none;
+            width: 100%; /* Make sure images fill the container */
+            height: auto;
+        }
+
+        .mySlides img {
+            width: 100%;
+            display: block; /* Remove extra space below image */
+        }
+
+        /* Optional: Add dots/indicators if needed */
+        .dot-container {
+            text-align: center;
+            padding: 10px;
+            background-color: var(--white);
+            border-bottom-left-radius: 12px;
+            border-bottom-right-radius: 12px;
+        }
+
+        .dot {
+            cursor: pointer;
+            height: 12px;
+            width: 12px;
+            margin: 0 4px;
+            background-color: #bbb;
+            border-radius: 50%;
+            display: inline-block;
+            transition: background-color 0.6s ease;
+        }
+
+        .active-dot, .dot:hover {
+            background-color: var(--primary-blue);
+        }
+
+        /* Generic Content Styles (Poli, Obat, Kontak) */
+        .content-box {
+            background-color: var(--white);
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            margin-top: 24px; /* Keep margin top for content boxes below slideshow */
+        }
+
+        .content-box h2 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 12px;
+        }
+
+        /* Daftar Poli & Obat List */
+        .item-list {
+            list-style: none;
+        }
+
+        .item-list li {
+            padding: 16px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+        
+        .item-list li:hover {
+            background-color: var(--light-blue);
+            border-color: var(--primary-blue);
+        }
+
+        .item-detail {
+            display: none;
+            margin-top: 16px;
+            padding: 20px;
+            background-color: var(--background-light);
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+        
+        .item-detail p {
+            margin-bottom: 8px;
+        }
+        
+        .item-detail strong {
+            display: inline-block;
+            width: 120px;
+        }
+        
+        /* Kontak & Info */
+        .info-list p {
+            font-size: 1rem;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+        }
+        .info-list i {
+            width: 20px;
+            margin-right: 12px;
+            color: var(--primary-blue);
+        }
+
+    </style>
+</head>
+<body>
+
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="logo-container">
+                <img src="https://i.imgur.com/UfPZRJ7.png" alt="Logo Klinik Pratama UM"> 
+            </div>
+            <h2>Klinik Pratama UM</h2>
+            <p>UPT Layanan Kesehatan</p>
+        </div>
+        <nav class="sidebar-nav">
+            <ul>
+                <li><a href="#" class="nav-link active" data-target="dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                <li><a href="#" class="nav-link" data-target="daftar-poli"><i class="fas fa-hospital"></i> Daftar Poli</a></li>
+                <li><a href="#" class="nav-link" data-target="daftar-obat"><i class="fas fa-pills"></i> Daftar Obat</a></li>
+                <li><a href="#" class="nav-link" data-target="kontak-info"><i class="fas fa-info-circle"></i> Kontak & Info</a></li>
+            </ul>
+        </nav>
+        <div class="sidebar-footer">
+            <div class="social-media">
+                <a href="https://x.com/UM_1954?s=09" target="_blank"><i class="fab fa-twitter"></i></a>
+                <a href="https://www.tiktok.com/@universitasnegerimalang?_t=ZS-90BOFgVRja3&_r=1" target="_blank"><i class="fab fa-tiktok"></i></a>
+                <a href="https://youtube.com/@klinikpratamaum?si=Y5OOuznAihGCoQLa" target="_blank"><i class="fab fa-youtube"></i></a>
+                <a href="https://www.facebook.com/share/v/17T8G76vfM/" target="_blank"><i class="fab fa-facebook"></i></a>
+                <a href="https://www.instagram.com/klinik.pratama.um?igsh=MW4wdnZtZWkybGp4Nw==" target="_blank"><i class="fab fa-instagram"></i></a>
+            </div>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <div id="digital-clock"></div>
+
+        <section id="dashboard" class="content-section active">
+            <header>
+                <h1>Selamat Datang di Portal Klinik UM!</h1>
+                <p>Gunakan menu di sebelah kiri untuk mengakses informasi yang Anda butuhkan, mulai dari ketersediaan layanan, jadwal poli, hingga mengecek status kunjungan Anda.</p>
+            </header>
+            <div class="card-container">
+                <div class="card">
+                    <div class="icon"><i class="fas fa-bed"></i></div>
+                    <div class="info">
+                        <h3>12 <span class="total-count">/ 20</span></h3>
+                        <p>Kamar Tersedia</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="icon"><i class="fas fa-user-md"></i></div>
+                    <div class="info">
+                        <h3>15 <span class="total-count">/ 20</span></h3>
+                        <p>Kuota Dokter Tersedia</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="slideshow-container">
+                <div class="mySlides fade">
+                    <img src="https://awsimages.detik.net.id/community/media/visual/2025/09/30/ilustrasi-poster-hari-batik-1759229140778_169.jpeg?w=650" alt="Selamat Hari Batik Nasional">
+                </div>
+                <div class="mySlides fade">
+                    <img src="https://pusatkrisis.kemkes.go.id/__asset/__images/content/91tips%20sehat%20mudik%20(1920%20x%20800%20px).png" alt="Selamat Hari Kesaktian Pancasila">
+                </div>
+                <div class="mySlides fade">
+                    <img src="https://asset-2.tribunnews.com/banten/foto/bank/images/Hari-Jantung-Sedunia-2025.jpg" alt="Selamat Hari Jantung Sedunia">
+                </div>
+                <div class="mySlides fade">
+                    <img src="https://pusatkrisis.kemkes.go.id/__asset/__images/content/98tips%20sehat%20mudik%20(1920%20x%20800%20px)%20(3).png" alt="Selamat Hari Rabies Sedunia">
+                </div>
+
+                <div class="dot-container">
+                    <span class="dot" onclick="currentSlide(1)"></span>
+                    <span class="dot" onclick="currentSlide(2)"></span>
+                    <span class="dot" onclick="currentSlide(3)"></span>
+                    <span class="dot" onclick="currentSlide(4)"></span>
+                </div>
+            </div>
+        </section>
+
+        <section id="daftar-poli" class="content-section">
+            <header>
+                <h1>Daftar Poli</h1>
+            </header>
+            <div class="content-box">
+                <h2>Pilih Poli untuk Melihat Detail</h2>
+                <ul class="item-list">
+                    <li onclick="toggleDetail('poli-umum')">
+                        <strong>Poli Umum</strong>
+                        <div id="poli-umum" class="item-detail">
+                            <p><strong>Dokter</strong>: Dr. Ahmad Dahlan</p>
+                            <p><strong>Jam Praktik</strong>: 10:00 - 16:00</p>
+                            <p><strong>Kuota Hari Ini</strong>: 15 / 20</p>
+                        </div>
+                    </li>
+                    <li onclick="toggleDetail('poli-gigi')">
+                        <strong>Poli Gigi</strong>
+                         <div id="poli-gigi" class="item-detail">
+                            <p><strong>Dokter</strong>: Drg. Citra Lestari</p>
+                            <p><strong>Jam Praktik</strong>: 09:00 - 15:00</p>
+                            <p><strong>Kuota Hari Ini</strong>: 12 / 20</p>
+                        </div>
+                    </li>
+                    <li onclick="toggleDetail('poli-anak')">
+                        <strong>Poli Anak</strong>
+                        <div id="poli-anak" class="item-detail">
+                            <p><strong>Dokter</strong>: Dr. Budi Santoso, Sp.A</p>
+                            <p><strong>Jam Praktik</strong>: 08:00 - 12:00</p>
+                            <p><strong>Kuota Hari Ini</strong>: 18 / 20</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="daftar-obat" class="content-section">
+            <header>
+                <h1>Daftar Obat</h1>
+            </header>
+            <div class="content-box">
+                <h2>Pilih Obat untuk Melihat Detail</h2>
+                 <ul class="item-list">
+                    <li onclick="toggleDetail('obat-paracetamol')">
+                        <strong>Paracetamol 500mg</strong>
+                        <div id="obat-paracetamol" class="item-detail">
+                            <p><strong>Indikasi</strong>: Meredakan demam dan nyeri ringan hingga sedang.</p>
+                            <p><strong>Dosis Dewasa</strong>: 1-2 tablet, 3-4 kali sehari.</p>
+                            <p><strong>Dosis Anak (6-12th)</strong>: ½-1 tablet, 3-4 kali sehari.</p>
+                        </div>
+                    </li>
+                    <li onclick="toggleDetail('obat-amoxicillin')">
+                        <strong>Amoxicillin 500mg</strong>
+                         <div id="obat-amoxicillin" class="item-detail">
+                            <p><strong>Indikasi</strong>: Antibiotik untuk infeksi bakteri (harus dengan resep dokter).</p>
+                            <p><strong>Dosis Dewasa</strong>: 1 tablet, 3 kali sehari.</p>
+                            <p><strong>Dosis Anak</strong>: Sesuai petunjuk dokter.</p>
+                        </div>
+                    </li>
+                     <li onclick="toggleDetail('obat-ctm')">
+                        <strong>CTM 4mg</strong>
+                         <div id="obat-ctm" class="item-detail">
+                            <p><strong>Indikasi</strong>: Meredakan gejala alergi seperti gatal-gatal, ruam, dan bersin.</p>
+                            <p><strong>Dosis Dewasa</strong>: 1 tablet, 3-4 kali sehari.</p>
+                            <p><strong>Dosis Anak (6-12th)</strong>: ½ tablet, 3-4 kali sehari.</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="kontak-info" class="content-section">
+            <header>
+                <h1>Kontak & Informasi</h1>
+            </header>
+            <div class="content-box">
+                <h2>Informasi Klinik Pratama UM</h2>
+                <div class="info-list">
+                    <p><i class="fas fa-map-marker-alt"></i> <strong>Alamat:</strong> Jl. Semarang No.5, Sumbersari, Kec. Lowokwaru, Kota Malang, Jawa Timur 65145</p>
+                    <p><i class="fas fa-phone"></i> <strong>Telepon:</strong> (0341) 551312</p>
+                    <p><i class="fas fa-envelope"></i> <strong>Email:</strong> klinik.pratama@um.ac.id</p>
+                    <p><i class="fas fa-clock"></i> <strong>Jam Operasional:</strong> Senin - Jumat, 08:00 - 16:00</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // --- JavaScript for Interactive Navigation ---
+        document.addEventListener('DOMContentLoaded', function() {
+            const navLinks = document.querySelectorAll('.nav-link');
+            const contentSections = document.querySelectorAll('.content-section');
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+
+                    // Remove active class from all links and sections
+                    navLinks.forEach(l => l.classList.remove('active'));
+                    contentSections.forEach(s => s.classList.remove('active'));
+
+                    // Add active class to the clicked link
+                    this.classList.add('active');
+
+                    // Show the target content section
+                    const targetId = this.getAttribute('data-target');
+                    const targetSection = document.getElementById(targetId);
+                    if (targetSection) {
+                        targetSection.classList.add('active');
+                    }
+                });
+            });
+
+            // --- JavaScript for Digital Clock ---
+            function updateClock() {
+                const clockElement = document.getElementById('digital-clock');
+                if (clockElement) {
+                    const now = new Date();
+                    const hours = String(now.getHours()).padStart(2, '0');
+                    const minutes = String(now.getMinutes()).padStart(2, '0');
+                    const seconds = String(now.getSeconds()).padStart(2, '0');
+                    clockElement.textContent = `${hours}:${minutes}:${seconds}`;
+                }
+            }
+
+            // Initial call and update every second
+            updateClock();
+            setInterval(updateClock, 1000);
+
+            // Start the slideshow when the dashboard is loaded
+            showSlides();
+        });
+
+        // --- JavaScript for Toggling Item Details (Poli & Obat) ---
+        function toggleDetail(id) {
+            const detailElement = document.getElementById(id);
+            if (detailElement) {
+                if (detailElement.style.display === 'block') {
+                    detailElement.style.display = 'none';
+                } else {
+                    detailElement.style.display = 'block';
+                }
+            }
+        }
+        
+        // --- JavaScript for Slideshow ---
+        let slideIndex = 0;
+        let slideInterval; // To hold the interval ID
+
+        function showSlides() {
+            let i;
+            let slides = document.getElementsByClassName("mySlides");
+            let dots = document.getElementsByClassName("dot");
+            for (i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";  
+            }
+            slideIndex++;
+            if (slideIndex > slides.length) {slideIndex = 1}    
+            for (i = 0; i < dots.length; i++) {
+                dots[i].className = dots[i].className.replace(" active-dot", "");
+            }
+            if (slides[slideIndex-1]) { // Check if slide exists before accessing
+                slides[slideIndex-1].style.display = "block";  
+            }
+            if (dots[slideIndex-1]) { // Check if dot exists before accessing
+                dots[slideIndex-1].className += " active-dot";
+            }
+            
+            // Clear any existing interval before setting a new one
+            clearInterval(slideInterval); 
+            slideInterval = setTimeout(showSlides, 4000); // Change image every 4 seconds
+        }
+
+        // Manual slide control (when clicking dots)
+        function currentSlide(n) {
+            clearInterval(slideInterval); // Stop auto-slide when manual control is used
+            slideIndex = n - 1; // Adjust slideIndex for showSlides logic
+            showSlides(); // Show the clicked slide
+        }
+    </script>
+</body>
+</html>
